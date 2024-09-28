@@ -1,19 +1,17 @@
-import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+
+from json_reader import JsonReader
 
 app = Flask(__name__)
+reader = JsonReader("https://catfact.ninja/fact", "")
 
-response = requests.get("https://catfact.ninja/fact")
-print("status code: " + str(response.status_code))
-data = response.json()
+response_data = reader.get_response_json()
 
-print(data)
-print(data["length"])
-
-
-@app.route("/")
-def main_page(fact=data):
-    return render_template('main.html', randomFact=fact)
+@app.route("/", methods = ['POST', 'GET'])
+def main_page(response_data = response_data):
+    if request.method == 'GET':
+        response_data = reader.get_response_json()
+    return render_template('main.html', data=response_data)
 
 @app.route("/history")
 def history_page():
@@ -22,4 +20,4 @@ def history_page():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

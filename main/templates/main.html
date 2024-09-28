@@ -1,20 +1,45 @@
 <HTML>
 <head>
-    <title>Main page</title>
+    <title>Cat academy</title>
+    <style>
+        /* image size 210x45 */
+        #cat {
+            width: 75px;
+            height: 45px;
+            background: url('static/cat.png') 75px 0;
+            float: left;
+        }
+        #tail {
+            width: 15px;
+            height: 45px;
+            background: url('static/cat.png') 88px 0;
+            float: left;
+        }
+        p {
+            font-size: 20px
+        }
+    </style>
 </head>
 <body>
 <table>
     <tr>
-        <td><h1>Weather outfit</h1></td>
+        <td><h1>FaC(A)Ts</h1></td>
     </tr>
     <tr>
-        <td><a href="history">Show history</a></td>
-        <td>Refresh button</td>
+        <td>
+            <form action="/">
+                <input type="submit" value="Refresh"/>
+            </form>
+        </td>
+        <td><a href="history">Show Catstory</a></td>
     </tr>
-    <p>Random fact about the cats: <i>{{ randomFact.fact }}</i></p>
-    <p>Random fact length: <i>{{randomFact.length}}</i></p>
 </table>
+<p>Random fact about cat: <i>{{ data.fact }}</i></p>
 
+{% for i in range(0, data.length, 5) %}
+    <img src="static/empty.gif" alt="Kitty's tail was here" id="tail"/>
+{% endfor %}
+<img src="static/empty.gif" alt="Nice kitty was here" id="cat"/>
 
 </body>
 </HTML>
