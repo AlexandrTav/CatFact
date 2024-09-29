@@ -20,26 +20,44 @@
         }
     </style>
 </head>
+
 <body>
+<h1>FaC(A)Ts</h1>
+Username: <b>{{ user }}</b>
+
 <table>
     <tr>
-        <td><h1>FaC(A)Ts</h1></td>
+        <td>
+            <form action="/" method="post">
+                <label for="username">Your name</label>
+                <input type="text" id="username" name="txt_username"/>
+                <input type="submit" name="btn_login" value="Login"/>
+            </form>
+        </td>
+        <td>
+            <form action="/logout">
+                <input type="submit" name="btn_logout" value="Logout"/>
+            </form>
+        </td>
     </tr>
     <tr>
         <td>
             <form action="/">
-                <input type="submit" value="Refresh"/>
+                <input type="submit" name="btn_refresh" value="New fact" style="float: left"/>
             </form>
         </td>
-        <td><a href="history">Show Catstory</a></td>
+        <td>
+            <a href="history" style="float: right">Show History</a>
+        </td>
     </tr>
 </table>
+
+
 <p>Random fact about cat: <i>{{ data.fact }}</i></p>
 
 {% for i in range(0, data.length, 5) %}
-    <img src="static/empty.gif" alt="Kitty's tail was here" id="tail"/>
+<img src="static/empty.gif" alt="Kitty's tail was here" id="tail"/>
 {% endfor %}
 <img src="static/empty.gif" alt="Nice kitty was here" id="cat"/>
-
 </body>
 </HTML>
