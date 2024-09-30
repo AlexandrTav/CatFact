@@ -1,19 +1,15 @@
 <HTML>
 <head>
-    <title>Cat academy</title>
+    <title>What To Wearther</title>
     <style>
         /* image size 210x45 */
-        #cat {
-            width: 75px;
-            height: 45px;
-            background: url('static/cat.png') 75px 0;
-            float: left;
+        #cloth1 {
+            width: 200px;
+            height: 200px;
         }
-        #tail {
-            width: 15px;
-            height: 45px;
-            background: url('static/cat.png') 88px 0;
-            float: left;
+        #cloth2 {
+            width: 200px;
+            height: 200px;
         }
         p {
             font-size: 20px
@@ -22,16 +18,16 @@
 </head>
 
 <body>
-<h1>FaC(A)Ts</h1>
-Username: <b>{{ user }}</b>
+<h1>Weather Info</h1>
+currentWeather: <b>{{ Wcity }}</b>
 
 <table>
     <tr>
         <td>
             <form action="/" method="post">
-                <label for="username">Your name</label>
-                <input type="text" id="username" name="txt_username"/>
-                <input type="submit" name="btn_login" value="Login"/>
+                <label for="city">Enter City</label>
+               <input type="text" id="city" name="txt_city"/>
+                <input type="submit" name="button_search" value="Search"/>
             </form>
         </td>
         <td>
@@ -43,7 +39,7 @@ Username: <b>{{ user }}</b>
     <tr>
         <td>
             <form action="/">
-                <input type="submit" name="btn_refresh" value="New fact" style="float: left"/>
+                <input type="submit" name="btn_refresh" value="Refresh Weather" style="float: left"/>
             </form>
         </td>
         <td>
@@ -53,11 +49,32 @@ Username: <b>{{ user }}</b>
 </table>
 
 
-<p>Random fact about cat: <i>{{ data.fact }}</i></p>
+<p><b>{{ data.location.name }}</b>: <i>{{ data.current.temp_c }} °C</i></p>
 
-{% for i in range(0, data.length, 5) %}
-<img src="static/empty.gif" alt="Kitty's tail was here" id="tail"/>
-{% endfor %}
-<img src="static/empty.gif" alt="Nice kitty was here" id="cat"/>
+
+<div>
+    {% if data.current.temp_c < 0 %}
+         <img src = "static/coat.jpg" id= "cloth1">
+         <img src = "static/hat.jpg" id="cloth2">
+    {% endif %}
+
+    {% if data.current.temp_c >= 0 and data.current.temp_c < 10 %}
+         <img src = "static/jacket.jpg" id= "cloth1">
+         <img src = "static/cap.jpg" id="cloth2">
+    {% endif %}
+
+    {% if data.current.temp_c >= 10 and data.current.temp_c <= 20 %}
+         <img src = "static/sweater.jpg" id= "cloth1">
+         <img src = "static/pants.jpg" id="cloth2">
+    {% endif %}
+
+    {% if data.current.temp_c > 20 %}
+         <img src = "static/tshirt.jpg" id= "cloth1">
+         <img src = "static/shorts.jpg" id="cloth2">
+    {% endif %}
+</div>
+
+<p>Artist: VAT</p>
+
 </body>
 </HTML>

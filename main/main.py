@@ -5,37 +5,40 @@ from history import History
 
 
 app = Flask(__name__)
-reader = JsonReader("https://catfact.ninja/fact", "")
+reader = JsonReader
+#f"http://api.weatherapi.com/v1/current.json?key&q=Brno"
+api_key = "68870090a3624a80ba2104715242309"
+base_url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q=Moscow"
+
+
+reader = JsonReader(base_url, api_key)
+
 history = History()
 app.secret_key = "VerySecretKey123@!#"
 
 response_data = reader.get_response_json()
 
-""" 
-Create main page from template
-User can login to add his name to history, and can work as a Guest.
-Username is saved to the session.
-Accepts POST and GET requests. 
-POST request is for accepting username.
-GET request for all other requests
-Cat image width depends on fact length
-"""
+#temperature = data.current.temp_c
+
 @app.route("/", methods = ['POST', 'GET'])
-def main_page(cat_data = response_data):
+def main_page(weather_data = response_data):
     # Create main page from template. Pass data to this page.
-    if 'username' in session:
-        username = session['username']
+    if 'city' in session:
+        city = session['city']
     else:
-        username = 'Guest'
+        city = 'Moscow'
 
     if request.method == 'GET':
-        cat_data = reader.get_response_json()
-        history.addRecord(username + ":" + str(cat_data))
-    if request.method == 'POST':
-        session['username'] = request.form['txt_username']
-        return render_template("main.html", data=cat_data, user=session['username'])
+        weather_data = reader.cityWeather(city)
+        history.addRecord(city + ":" + str(weather_data))
 
-    return render_template('main.html', data=cat_data, user=username)
+    if request.method == 'POST':
+        city = request.form['txt_city']
+        session['city'] = city
+        weather_data = reader.cityWeather(city)
+
+
+    return render_template('main.html', data=weather_data, Wcity=city)
 
 """
 Page shows history of main page usage. Reads this data from the file.
