@@ -1,6 +1,6 @@
 <HTML>
 <head>
-    <title>Cat academy</title>
+    <title>What To Wearther</title>
     <style>
         /* image size 210x45 */
         #cat {
@@ -22,7 +22,7 @@
 </head>
 
 <body>
-<h1>FaC(A)Ts</h1>
+<h1>Weather Info</h1>
 Username: <b>{{ user }}</b>
 
 <table>
@@ -43,7 +43,7 @@ Username: <b>{{ user }}</b>
     <tr>
         <td>
             <form action="/">
-                <input type="submit" name="btn_refresh" value="New fact" style="float: left"/>
+                <input type="submit" name="btn_refresh" value="Refresh Weather" style="float: left"/>
             </form>
         </td>
         <td>
@@ -53,7 +53,7 @@ Username: <b>{{ user }}</b>
 </table>
 
 
-<p>Random fact about cat: <i>{{ data.fact }}</i></p>
+<p><b>{{ data.location.name }}</b>: <i>{{ data.current.temp_c }} °C</i></p>
 
 {% for i in range(0, data.length, 5) %}
 <img src="static/empty.gif" alt="Kitty's tail was here" id="tail"/>
