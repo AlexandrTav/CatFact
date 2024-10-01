@@ -52,10 +52,6 @@ def history_page(history_data=None):
 """
 Removes username from the session and returns 'Guest' instead. Then redirects to main page
 """
-@app.route("/logout")
-def logout():
-    session.pop('username', 'Guest')
-    return redirect("/")
 
 
 if __name__ == '__main__':
