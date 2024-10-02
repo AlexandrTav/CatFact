@@ -1,5 +1,7 @@
 import requests
 
+from datetime import datetime
+
 """
 Reads data from free Cat facts API
 """
@@ -13,11 +15,23 @@ class JsonReader:
         response = requests.get(self.base_url)
         return response.json()
 
-    def TempData(self):
+    def H_Time(self):
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+    def TempData(self, city="Moscow"):
         response = requests.get(self.base_url)
-        data = response.json()
-        return data["current"]["temp_c"]
+        data = self.cityWeather(city)
+        temp = data["current"]["temp_c"]
+        cond = data["current"]["condition"]["text"]
+        return temp, cond
+
+    def HistoryInfo(now, city, data):
+        {
+            "time": now,
+            "city": city,
+            "temperature": data
+        }
 
     def get_response_json(self):
-        response = requests.get(self.base_url)
-        return response.json()
+        return self.cityWeather()

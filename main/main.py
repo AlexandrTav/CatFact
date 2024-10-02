@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, url_for
 
 from json_reader import JsonReader
 from history import History
+
+from datetime import date
 
 
 app = Flask(__name__)
@@ -20,6 +22,7 @@ response_data = reader.get_response_json()
 
 #temperature = data.current.temp_c
 
+
 @app.route("/", methods = ['POST', 'GET'])
 def main_page(weather_data = response_data):
     # Create main page from template. Pass data to this page.
@@ -28,31 +31,48 @@ def main_page(weather_data = response_data):
     else:
         city = 'Moscow'
 
-    if request.method == 'GET':
+    try:
         weather_data = reader.cityWeather(city)
-        history.addRecord(city + ":" + str(weather_data))
+        if 'current' not in weather_data:
+            raise ValueError("Invalid")
+        temp, condition = reader.TempData(city)
+    except Exception as e:
+        return redirect(url_for('exception'))
+
+
+    if request.method == 'GET':
+
+        try:
+            weather_data = reader.cityWeather(city)
+            if 'current' not in weather_data:
+                raise ValueError("Not Valid")
+            history.addRecord(city + ":" + str(weather_data))
+        except Exception as e:
+            return redirect(url_for('exception'))
 
     if request.method == 'POST':
         city = request.form['txt_city']
         session['city'] = city
-        weather_data = reader.cityWeather(city)
+        try:
+             weather_data = reader.cityWeather(city)
+             if 'current' not in weather_data:
+                 raise ValueError("Not Valid")
+        except Exception as e:
+            return redirect(url_for('exception'))
+        condition = reader.TempData(city)
 
 
-    return render_template('main.html', data=weather_data, Wcity=city)
+    return render_template('main.html', data=weather_data, Wcity=city, Wcond=condition)
 
-"""
-Page shows history of main page usage. Reads this data from the file.
-"""
 @app.route("/history")
 def history_page(history_data=None):
     if request.method == 'GET':
         history_data = history.getHistory()
     return render_template('history.html', data=history_data)
 
-"""
-Removes username from the session and returns 'Guest' instead. Then redirects to main page
-"""
-
+@app.route("/whenException")
+def exception():
+    return render_template("ExceptionSite.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

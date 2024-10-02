@@ -11,6 +11,10 @@
             width: 200px;
             height: 200px;
         }
+        #cloth3 {
+            width: 200px;
+            height: 200px;
+        }
         p {
             font-size: 20px
         }
@@ -19,14 +23,13 @@
 
 <body>
 <h1>Weather Info</h1>
-currentWeather: <b>{{ Wcity }}</b>
 
 <table>
     <tr>
         <td>
             <form action="/" method="post">
                 <label for="city">Enter City</label>
-               <input type="text" id="city" name="txt_city"/>
+                <input type="text" id="city" name="txt_city"/>
                 <input type="submit" name="button_search" value="Search"/>
             </form>
         </td>
@@ -45,28 +48,37 @@ currentWeather: <b>{{ Wcity }}</b>
 
 
 <p><b>{{ data.location.name }}</b>: <i>{{ data.current.temp_c }} °C</i></p>
+<p>Condition: {{ data.current.condition.text }}</p>
 
 
 <div>
+
     {% if data.current.temp_c < 0 %}
          <img src = "static/coat.jpg" id= "cloth1">
          <img src = "static/hat.jpg" id="cloth2">
-    {% endif %}
 
-    {% if data.current.temp_c >= 0 and data.current.temp_c < 10 %}
+    {% elif data.current.temp_c >= 0 and data.current.temp_c < 10 %}
          <img src = "static/jacket.jpg" id= "cloth1">
          <img src = "static/cap.jpg" id="cloth2">
-    {% endif %}
 
-    {% if data.current.temp_c >= 10 and data.current.temp_c <= 20 %}
+    {% elif data.current.temp_c >= 10 and data.current.temp_c <= 20 %}
          <img src = "static/sweater.jpg" id= "cloth1">
          <img src = "static/pants.jpg" id="cloth2">
-    {% endif %}
 
-    {% if data.current.temp_c > 20 %}
+    {% else %}
          <img src = "static/tshirt.jpg" id= "cloth1">
          <img src = "static/shorts.jpg" id="cloth2">
     {% endif %}
+
+   {% if data.current.condition.text == "Rain" %}
+         <img src = "static/umb.jpg" id= "cloth3">
+
+    {% elif data.current.condition.text == "Sunny" %}
+         <img src = "static/gla.jpg" id= "cloth3">
+
+    {% elif data.current.condition.text == "Snow" %}
+         <img src = "static/ski.jpg" id= "cloth3">
+   {% endif %}
 </div>
 
 <p>Artist: VAT</p>
