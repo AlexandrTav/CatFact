@@ -19,6 +19,7 @@
             font-size: 20px
         }
     </style>
+
 </head>
 
 <body>
@@ -48,7 +49,12 @@
 
 
 <h2><b>{{ data.location.name }}</b>: <i>{{ data.current.temp_c }} °C</i></h2>
-<h3>Condition: {{ data.current.condition.text }}</h3>
+<h3>Condition: {{ data.current.condition.text }} <style>
+        #stav {
+             width:200px;
+             height: 200px;
+        }
+    </style></h3>
 
 <h2>RECOMMENDED OUTFIT:</h2>
 
@@ -71,15 +77,38 @@
          <img src = "static/shorts.jpg" id="cloth2">
     {% endif %}
 
-   {% if "rain" in condition|lower %}
+   {% if data.current.condition.code in [1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201,- 1204, 1207, 1237] %}
          <img src = "static/umb.jpg" id= "cloth3">
 
-    {% elif data.current.condition.text == "Sunny" %}
+    {% elif data.current.condition.code in [1000] %}
          <img src = "static/gla.jpg" id= "cloth3">
 
-    {% elif data.current.condition.text == "Snow" %}
+    {% elif data.current.condition.code in [1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258, 1261, 1264] %}
          <img src = "static/ski.jpg" id= "cloth3">
    {% endif %}
+
+    {% if data.current.condition.code in [1000] %}
+         <img src = "static/sun.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1003] %}
+         <img src = "static/suncld.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1006, 1009] %}
+         <img src = "static/clds.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201,- 1204, 1207, 1237] %}
+         <img src = "static/rain.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258, 1261, 1264] %}
+         <img src = "static/snow.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1087, 1273, 1276, 1279, 1282] %}
+         <img src = "static/storm.jpg" id= "stav">
+
+    {% elif data.current.condition.code in [1135, 1147] %}
+         <img src = "static/fog.jpg" id= "stav">
+
+    {% endif %}
 </div>
 
 <p>Artist: VAT</p>

@@ -10,7 +10,8 @@ class History:
     def addRecord(self, info):
         self.file = open(self.HISTORY_FILE_NAME, "a")
         now = datetime.now()
-        self.file.write(str(now) + ": " + info + "\n")
+        time = now.strftime("%d/%m/%Y %H:%M")
+        self.file.write(str(time) + ": " + info + "\n")
         self.file.close()
 
     def getHistory(self):

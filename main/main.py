@@ -3,9 +3,6 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from json_reader import JsonReader
 from history import History
 
-from datetime import date
-
-
 app = Flask(__name__)
 reader = JsonReader
 #f"http://api.weatherapi.com/v1/current.json?key&q=Brno"
@@ -20,9 +17,6 @@ app.secret_key = "VerySecretKey123@!#"
 
 response_data = reader.get_response_json()
 
-#temperature = data.current.temp_c
-
-
 @app.route("/", methods = ['POST', 'GET'])
 def main_page(weather_data = response_data):
     # Create main page from template. Pass data to this page.
@@ -36,10 +30,10 @@ def main_page(weather_data = response_data):
 
         try:
             weather_data = reader.cityWeather(city)
-            condition = reader.TempData()
+            temp, condition = reader.TempData()
             if 'current' not in weather_data:
                 raise ValueError("Not Valid")
-            history.addRecord(city + ":" + str(weather_data))
+            history.addRecord(city + ": " + str(temp) + " °C - " + str(weather_data["current"]["condition"]["text"]))
         except Exception as e:
             return redirect(url_for('exception'))
 
@@ -54,7 +48,6 @@ def main_page(weather_data = response_data):
             session.pop('city', None)
             return redirect(url_for('exception'))
         condition = reader.TempData()
-        #history.addRecord(city, temp, condition)
 
 
     return render_template('main.html', data=weather_data, Wcity=city, Wcond=condition)
