@@ -31,19 +31,12 @@ def main_page(weather_data = response_data):
     else:
         city = 'Moscow'
 
-    try:
-        weather_data = reader.cityWeather(city)
-        if 'current' not in weather_data:
-            raise ValueError("Invalid")
-        temp, condition = reader.TempData(city)
-    except Exception as e:
-        return redirect(url_for('exception'))
-
 
     if request.method == 'GET':
 
         try:
             weather_data = reader.cityWeather(city)
+            condition = reader.TempData()
             if 'current' not in weather_data:
                 raise ValueError("Not Valid")
             history.addRecord(city + ":" + str(weather_data))
@@ -60,7 +53,7 @@ def main_page(weather_data = response_data):
         except Exception as e:
             session.pop('city', None)
             return redirect(url_for('exception'))
-        cond = reader.TempData(city)
+        condition = reader.TempData()
         #history.addRecord(city, temp, condition)
 
 
